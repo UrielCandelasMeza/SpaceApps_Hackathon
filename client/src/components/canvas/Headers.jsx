@@ -1,19 +1,24 @@
 
 const HeaderCanvas = () => {
   return (
-    // Contenedor principal: usa Flexbox para alinear ítems, 
-    // padding horizontal (px-10) y vertical (py-4), y fondo oscuro.
+
     <div className="contHed">
       
       <div className="div-izq">
         <h1 className="text-3xl font-bold tracking-wider">
-          MI PROYECTO
+          ExoQuetzal
+        </h1>
+      </div>
+
+      <div className=" hidden sm:block">
+        <h1 className="text-2xl font-bold tracking-wider ">
+          Ver más
         </h1>
       </div>
       
-      <div className="div-der"> {/* Ocultar en móviles, mostrar en pantallas pequeñas (sm) y mayores */}
-        <h1 className="tracking-wider">
-          Bienvenido a mi Portafolio
+      <div className="div-der hidden sm:block"> {/* Ocultar en móviles, mostrar en pantallas pequeñas (sm) y mayores */}
+        <h1 className="text-2xl font-bold tracking-wider">
+          Nuestra misión
         </h1>
       </div>
 
