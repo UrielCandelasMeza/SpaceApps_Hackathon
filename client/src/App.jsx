@@ -1,14 +1,17 @@
 import { BrowserRouter } from "react-router-dom";
 
-import { StarsCanvas } from "./components";
-import Kepler from "./components/canvas/planetasCanvas/kepler1";
+import {Contact, StarsCanvas} from "./components";
+
+
 
 const App = () => {
-  return(
+  return (
     <BrowserRouter>
+  
         <div className='relative z-0'>
+          <Contact />
           <StarsCanvas />
-      </div>
+        </div>
     </BrowserRouter>
   );
 }
