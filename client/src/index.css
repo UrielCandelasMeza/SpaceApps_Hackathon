@@ -291,6 +291,17 @@ footer{
   background-color: var(--tertiary-color);
 }
 
+.contHed
+{
+
+  display: flex;             /* Habilitar Flexbox */
+  justify-content: space-between; /* Pega el primero a la izquierda y el último a la derecha */
+  width: 100%;
+  padding: 40px;
+  padding-top: 40px;
+
+}
+
 /*IMAGEN*/
 
 .imagenDiv {

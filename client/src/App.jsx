@@ -1,19 +1,13 @@
-import { BrowserRouter } from "react-router-dom";
-
-import {Contact, StarsCanvas} from "./components";
-
-
+import { Routes, Route } from "react-router-dom";
+import Index from "./views/Index"
 
 const App = () => {
   return (
-    <BrowserRouter>
-  
-        <div className='relative z-0'>
-          <Contact />
-          <StarsCanvas />
-        </div>
-    </BrowserRouter>
+    <Routes>
+
+      <Route path="/" element={<Index/>}/>
+    </Routes>
   );
-}
+};
 
 export default App;

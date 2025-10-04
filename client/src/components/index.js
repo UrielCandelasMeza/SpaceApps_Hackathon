@@ -1,15 +1,17 @@
-import { EarthCanvas, BallCanvas, ComputersCanvas, StarsCanvas } from './canvas';
+import {
+  EarthCanvas,
+  BallCanvas,
+  StarsCanvas,
+  Kepler3Canvas,
+  HeaderCanvas,
+} from "./canvas";
 import Navbar from "./Navbar";
-import Contact from "./Contact";
 import CanvasLoader from "./Loader";
-
-
 export {
-  Contact,
+  EarthCanvas,
+  HeaderCanvas,
   Navbar,
   CanvasLoader,
-  EarthCanvas, 
-  BallCanvas, 
-  ComputersCanvas, 
-  StarsCanvas
+  Kepler3Canvas,
+  StarsCanvas,
 };
