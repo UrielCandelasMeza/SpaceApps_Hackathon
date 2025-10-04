@@ -1,13 +1,13 @@
 import { BrowserRouter } from "react-router-dom";
 
 import { StarsCanvas } from "./components";
+import { HeaderCanvas } from "./components"; 
 
 const App = () => {
   return(
     <BrowserRouter>
-      <div className='w-full h-auto relative z-0'>
+          <HeaderCanvas />
           <StarsCanvas />
-        </div>
     </BrowserRouter>
   );
 }

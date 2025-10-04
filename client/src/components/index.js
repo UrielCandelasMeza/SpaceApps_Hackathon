@@ -1,9 +1,3 @@
-import { EarthCanvas, BallCanvas, StarsCanvas } from './canvas';
+import { EarthCanvas, BallCanvas, StarsCanvas, HeaderCanvas } from "./canvas";
 
-
-
-export {
-  EarthCanvas, 
-  BallCanvas, 
-  StarsCanvas
-};
+export { EarthCanvas, BallCanvas, StarsCanvas, HeaderCanvas };
