@@ -4,7 +4,7 @@ import { StarsCanvas } from "./components";
 import { HeaderCanvas } from "./components"; 
 
 const App = () => {
-  return(
+  return (
     <BrowserRouter>
           <HeaderCanvas />
           <StarsCanvas />

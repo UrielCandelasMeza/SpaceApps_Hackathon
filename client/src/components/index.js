@@ -1,3 +1,11 @@
 import { EarthCanvas, BallCanvas, StarsCanvas, HeaderCanvas } from "./canvas";
-
-export { EarthCanvas, BallCanvas, StarsCanvas, HeaderCanvas };
+import Navbar from "./Navbar";
+import CanvasLoader from "./Loader";
+export {
+  EarthCanvas,
+  BallCanvas,
+  StarsCanvas,
+  HeaderCanvas,
+  Navbar,
+  CanvasLoader,
+};
