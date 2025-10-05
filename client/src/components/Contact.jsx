@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup"; // Importamos Yup para la validación
 import styled from "styled-components";
 import axios from "axios"; // Importamos Axios
+
 
 import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
@@ -22,8 +24,9 @@ const UploadSchema = Yup.object().shape({
     }),
 });
 
-
 const Contact = ({ selectedModel }) => {
+    const navigate = useNavigate();
+
 
     const [subiendo, setSubiendo] = useState(false);
     const [serverState, setServerState] = useState({ 
@@ -40,6 +43,8 @@ const Contact = ({ selectedModel }) => {
       setSubmitting(true);
       setSubiendo(true); // Ocultamos el form y activamos la rotación rápida
       setServerState({ success: false, error: null }); // Resetear estado
+      navigate("/Info");
+
 
       // 1. Crear el objeto FormData
       const formData = new FormData();
@@ -69,7 +74,8 @@ const Contact = ({ selectedModel }) => {
         // Retraso para que se vea la animación de rotación rápida antes de mostrar el resultado/formulario
         setTimeout(() => {
           setSubiendo(false); 
-        }, 1000); // 1 segundo de rotación extra
+        }, 1000);
+         // 1 segundo de rotación extra
       }
     },
   });
