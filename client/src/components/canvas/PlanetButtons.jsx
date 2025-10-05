@@ -1,6 +1,8 @@
 
+// NavButton.jsx
 import React from 'react';
-const NavButton = ({ title, angle }) => {
+// Asegúrate de recibir 'path' en los props
+const NavButton = ({ title, angle, path }) => { 
   const hoverTransform = `rotate(-${angle}deg) translateY(-4px)`;
   const baseTransform = `rotate(-${angle}deg)`; 
 
@@ -12,10 +14,11 @@ const NavButton = ({ title, angle }) => {
       }}
     >
       <a 
-        href={`#${title.toLowerCase().replace(' ', '-')}`} 
+        // CAMBIO CLAVE: Usamos 'path' en lugar del hash '#'
+        href={path} 
         className="inline-block text-white text-lg tracking-widest uppercase 
-                   transition-all duration-300 whitespace-nowrap 
-                   text-glow-white" 
+                    transition-all duration-300 whitespace-nowrap 
+                    text-glow-white" 
         
         style={{ 
           transform: baseTransform,
@@ -34,30 +37,29 @@ const NavButton = ({ title, angle }) => {
 };
 
 
+// PlanetButtonCanvas.jsx
 const PlanetButtonCanvas = () => {
 
   const menuItems = [
-    { title: "START", angle: 0 },         // Arriba (Centro)
-    { title: "ABOUT US", angle: 330 },    // Izquierda superior
-    { title: "CREDITS", angle: 300 },     // Izquierda media
-    { title: "PAST PRED.", angle: 30 },   // Derecha superior
-    { title: "MISSION", angle: 60 },      // Derecha media
+    { title: "START", angle: 0, path: "/SeleccionarModelo" },
+    { title: "ABOUT US", angle: 330, path: "/acerca-de" },
+    { title: "CREDITS", angle: 300, path: "/creditos" },
+    { title: "PAST PRED.", angle: 30, path: "/predicciones" },
+    { title: "MISSION", angle: 60, path: "/mision" },
   ];
 
   return (
     <div className="container_body relative w-full h-full min-h-screen">
-        
-
         <div className="absolute inset-0 z-10 pointer-events-none">
             {menuItems.map((item) => (
                 <NavButton 
                     key={item.title}
                     title={item.title} 
                     angle={item.angle} 
+                    path={item.path} // <--- PASS PATH TO NavButton
                 />
             ))}
         </div>
-
     </div>
   );
 };
