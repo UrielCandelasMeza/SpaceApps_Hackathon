@@ -1,38 +1,93 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFormik } from "formik"; // Reemplazamos emailjs por Formik
+import { useFormik } from "formik";
+import * as Yup from "yup"; // Importamos Yup para la validación
 import styled from "styled-components";
+import axios from "axios"; // Importamos Axios
 
 import { styles } from "../styles";
-import { EarthCanvas } from "./canvas"; // Se re-importa el planeta
+import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
 
+// -------------------------------------------------------------
+// Definición de Esquema de Validación con Yup
+// -------------------------------------------------------------
+const UploadSchema = Yup.object().shape({
+  file: Yup.mixed()
+    .required("Se requiere un archivo para subir.")
+    .test("is-csv", "El archivo debe ser un CSV (.csv)", (value) => {
+      // Valida si el archivo es un objeto y termina con '.csv'
+      return value && typeof value.name === "string" && value.name.toLowerCase().endsWith(".csv");
+    }),
+});
+
+
 const Contact = () => {
   const [subiendo, setSubiendo] = useState(false);
+  const [serverState, setServerState] = useState({ 
+    success: false, 
+    error: null 
+  });
 
   const formik = useFormik({
     initialValues: {
       file: null, // Campo para manejar la subida de archivos
     },
-    onSubmit: (values, { setSubmitting }) => {
-      console.log("Archivo subido:", values.file);
+    validationSchema: UploadSchema, // Aplicamos el esquema de validación
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
+      setSubiendo(true); // Ocultamos el form y activamos la rotación rápida
+      setServerState({ success: false, error: null }); // Resetear estado
 
-      // Ocultamos el form y activamos la rotación rápida
-      setSubiendo(true);
+      // 1. Crear el objeto FormData
+      const formData = new FormData();
+      // 'csvFile' debe coincidir con el nombre usado en Multer (upload.single("csvFile"))
+      formData.append("csvFile", values.file); 
 
-      // Simulamos tiempo de respuesta del servidor (4 segundos)
-      setTimeout(() => {
-        console.log("Respuesta recibida del servidor");
+      // La URL de tu servidor Express. Asegúrate de que el puerto sea correcto (e.g., 3000)
+      const serverUrl = "http://localhost:3000/api/csv/analysis"; // Ajusta según tu estructura de rutas
+
+      try {
+        // 2. Realizar la petición POST con Axios
+        const response = await axios.post(serverUrl, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        console.log("Respuesta del servidor:", response.data);
+        setServerState({ success: true, error: null });
+        resetForm(); // Limpia el formulario si la subida fue exitosa
+
+      } catch (error) {
+        console.error("Error al subir el archivo:", error.response ? error.response.data : error.message);
+        setServerState({ success: false, error: "Error al subir el archivo. Revisa la consola para más detalles." });
+      } finally {
         setSubmitting(false);
-        // Si quieres que el form reaparezca al terminar la subida, descomenta la siguiente línea:
-        // setSubiendo(false); 
-      }, 4000);
+        // Retraso para que se vea la animación de rotación rápida antes de mostrar el resultado/formulario
+        setTimeout(() => {
+          setSubiendo(false); 
+        }, 1000); // 1 segundo de rotación extra
+      }
     },
   });
 
   // Controla la velocidad de rotación: Rápido (15) si está subiendo, normal (2) si no.
   const planetRotationSpeed = formik.isSubmitting ? 15 : 2; 
+
+  // Determinar el mensaje de estado
+  let statusMessage = null;
+  if (serverState.success) {
+    statusMessage = (
+      <p className="text-green-500 font-bold text-[18px]">✅ ¡Archivo subido con éxito! El planeta ha regresado a su rotación normal.</p>
+    );
+  } else if (serverState.error) {
+    statusMessage = (
+      <p className="text-red-500 font-bold text-[18px]">❌ {serverState.error}</p>
+    );
+  }
+
 
   return (
     <div
@@ -40,14 +95,11 @@ const Contact = () => {
     >
       
       {/* -------------------- FORMULARIO (IZQUIERDA) -------------------- */}
-      {/* Usamos AnimatePresence para animar el desmontaje del formulario */}
       <AnimatePresence>
-        {/* FORM: solo si NO se ha activado la animación de salida */}
         {!subiendo && (
           <motion.div
             variants={slideIn("left", "tween", 0.2, 1)}
             className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
-            // Animación de salida: desaparecerá con opacidad 0 y moviéndose -500px a la izquierda
             exit={{ opacity: 0, x: -500, transition: { duration: 0.5 } }}
           >
             <p className={styles.sectionSubText}>Sube los datos que quieras</p>
@@ -58,13 +110,15 @@ const Contact = () => {
               className="mt-12 flex flex-col gap-8 content-center"
             >
               <StyledWrapper>
-                <label htmlFor="file" className="custum-file-upload">
+                <label 
+                    htmlFor="file" 
+                    className="custum-file-upload"
+                    // Deshabilitar la interacción si se está subiendo
+                    style={formik.isSubmitting ? { pointerEvents: 'none', opacity: 0.6 } : {}}
+                >
                   <div className="icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                    {/* SVG Icon */}
+                    <svg viewBox="0 0 24 24" fill xmlns="http://www.w3.org/2000/svg">
                       <path
                         fillRule="evenodd"
                         clipRule="evenodd"
@@ -83,16 +137,27 @@ const Contact = () => {
                     id="file"
                     type="file"
                     name="file"
-                    onChange={(event) =>
-                      formik.setFieldValue("file", event.currentTarget.files[0])
-                    }
+                    accept=".csv" // Solo acepta archivos CSV
+                    onChange={(event) => {
+                      formik.setFieldValue("file", event.currentTarget.files[0]);
+                      setServerState({ success: false, error: null }); // Limpiar estado al seleccionar nuevo archivo
+                    }}
                   />
                 </label>
               </StyledWrapper>
+              
+              {/* Mensaje de error de validación de Formik */}
+              {formik.errors.file && formik.touched.file && (
+                <p className="text-red-500 text-sm mt-[-10px]">{formik.errors.file}</p>
+              )}
+
+              {/* Mensaje de estado del servidor */}
+              {statusMessage}
 
               <button
                 type="submit"
-                disabled={formik.isSubmitting || !formik.values.file}
+                // Deshabilitar si está subiendo O NO hay archivo subido O hay errores de validación
+                disabled={formik.isSubmitting || !formik.values.file || formik.errors.file} 
                 className="bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary"
               >
                 {formik.isSubmitting ? "Subiendo..." : "Subir"}
@@ -109,7 +174,7 @@ const Contact = () => {
       >
         <EarthCanvas 
           autoRotate={true}
-          autoRotateSpeed={planetRotationSpeed} // Control de la velocidad de rotación
+          autoRotateSpeed={planetRotationSpeed}
         />
       </motion.div>
     </div>

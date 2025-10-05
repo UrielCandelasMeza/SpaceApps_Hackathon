@@ -4,9 +4,21 @@ import { type KOI, type TOI, type K2, Models } from "../../types";
 import * as tf from "@tensorflow/tfjs-node";
 
 export const manageData = async (req: Request, res: Response) => {
+
   const { type } = req.params;
+  
   if (!req.file) {
-    return res.status(400).json({ error: "There is no csv file" });
+    return res.status(400).json({ 
+      success: false, 
+      error: "No se ha subido ningún archivo CSV." 
+    });
+  }
+  
+   if (file.mimetype !== 'text/csv' && file.originalname.split('.').pop() !== 'csv') {
+      return res.status(400).json({ 
+          success: false, 
+          error: "El archivo no es un CSV válido." 
+      });
   }
 
   const file = req.file;
@@ -86,10 +98,18 @@ export const manageData = async (req: Request, res: Response) => {
     predictions.dispose();
 
     console.log("Predicciones:", predictionsArray);
+
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(500).json({ error: `Error: ${error.message}` });
+      console.error("Error en el procesamiento del archivo:", error.message);
+      return res.status(500).json({ 
+        success: false,
+        error: `Error interno al procesar el archivo: ${error.message}` 
+      });
     }
-    return res.status(500).json({ error: "Unknown error" });
+    return res.status(500).json({ 
+      success: false,
+      error: "Error desconocido al procesar el archivo." 
+    });
   }
 };
