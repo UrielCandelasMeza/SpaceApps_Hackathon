@@ -1,7 +1,7 @@
 export enum Models {
-  KOI,
-  TOI,
-  K2,
+  KOI = "KOI",
+  TOI = "TOI",
+  K2 = "K2",
 }
 
 export interface KOI {

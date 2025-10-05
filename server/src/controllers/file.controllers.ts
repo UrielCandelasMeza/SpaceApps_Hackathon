@@ -1,52 +1,103 @@
 import type { Request, Response } from "express";
+import { processFile, prepareData } from "../lib/parseFile";
+import { type KOI, type TOI, type K2, Models } from "../../types";
+import * as tf from "@tensorflow/tfjs-node";
 
-// Definición extendida para Request con el archivo de Multer
-interface MulterRequest extends Request {
-  file?: Express.Multer.File;
-}
+export const manageData = async (req: Request, res: Response) => {
 
-export const manageData = (req: MulterRequest, res: Response) => {
   const { type } = req.params;
   
-  // 1. Verificar si el archivo fue subido
   if (!req.file) {
     return res.status(400).json({ 
       success: false, 
       error: "No se ha subido ningún archivo CSV." 
     });
   }
-
-  const file = req.file;
   
-  // Vamos a verificar si efectivamente es un CSV
-  if (file.mimetype !== 'text/csv' && file.originalname.split('.').pop() !== 'csv') {
+   if (file.mimetype !== 'text/csv' && file.originalname.split('.').pop() !== 'csv') {
       return res.status(400).json({ 
           success: false, 
           error: "El archivo no es un CSV válido." 
       });
   }
 
-  // 2. Procesamiento del archivo (ejemplo)
+  const file = req.file;
+  let processedFile: any;
+  const features: string[] = [];
   try {
-    // El contenido del archivo está en req.file.buffer (porque usaste multer.memoryStorage())
-    const csvContent = file.buffer.toString('utf8');
-    
-    console.log(`Tipo de análisis: ${type}`);
-    console.log(`Nombre del archivo: ${file.originalname}`);
-    console.log(`Tamaño del archivo: ${file.size} bytes`);
+    if (type == Models.KOI) {
+      processedFile = processFile<KOI>(file.buffer);
+      features.push(
+        "koi_score",
+        "koi_fpflag_nt",
+        "koi_fpflag_ss",
+        "koi_fpflag_co",
+        "koi_fpflag_ec",
+        "koi_period",
+        "koi_impact",
+        "koi_duration",
+        "koi_depth",
+        "koi_prad",
+        "koi_teq",
+        "koi_insol",
+        "koi_model_snr",
+        "koi_steff",
+        "koi_slogg",
+        "koi_srad",
+      );
+    }
+    if (type == Models.TOI) {
+      processedFile = processFile<TOI>(file.buffer);
+      features.push(
+        "ra",
+        "dec",
+        "st_pmra",
+        "st_pmdec",
+        "pl_tranmid",
+        "pl_orbper",
+        "pl_trandurh",
+        "pl_trandep",
+        "pl_rade",
+        "pl_insol",
+        "pl_eqt",
+        "st_tmag",
+        "st_dist",
+        "st_teff",
+        "st_logg",
+        "st_rad",
+      );
+    }
+    if (type == Models.K2) {
+      processedFile = processFile<K2>(file.buffer);
+      features.push(
+        "disposition",
+        "pl_orbper",
+        "pl_rade",
+        "pl_radj",
+        "sy_snum",
+        "st_teff",
+        "st_rad",
+        "st_mass",
+        "ra",
+        "dec",
+        "sy_dist",
+        "sy_vmag",
+        "sy_kmag",
+        "sy_gaiamag",
+      );
+    }
+    const X_tensors = prepareData(processedFile, features);
+    const model = await tf.loadLayersModel(
+      `http://localhost:8000/${type}_Model/model.json`,
+    );
 
-    // ************ // Pon tu logica aqui candelas
-    // ************
+    const predictions = model.predict(X_tensors) as tf.Tensor;
+    const predictionsArray = await predictions.array();
 
-    // 3. Respuesta Exitosa
-    return res.status(200).json({
-      success: true,
-      message: `Archivo '${file.originalname}' subido y analizado para el tipo: ${type}`,
-      fileInfo: {
-        size: file.size,
-        mimetype: file.mimetype,
-      },
-    });
+    X_tensors.dispose();
+    predictions.dispose();
+
+    console.log("Predicciones:", predictionsArray);
 
   } catch (error) {
     if (error instanceof Error) {
