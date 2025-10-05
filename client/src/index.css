@@ -302,7 +302,18 @@ footer{
 
 }
 
+.text-glow-white:hover {
+  text-shadow: 
+    0 0 5px #fff,  /* Sombra más definida */
+    0 0 10px #fff, /* Sombra más difusa */
+    0 0 15px #b0e0ff; /* Tono azul/blanco para un efecto de energía */
+  transform: translateY(14px);
+}
+
+
 /*IMAGEN*/
+
+
 
 .imagenDiv {
   position: absolute;

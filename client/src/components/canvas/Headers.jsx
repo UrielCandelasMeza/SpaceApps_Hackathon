@@ -9,11 +9,10 @@ const HeaderCanvas = () => {
           ExoQuetzal
         </h1>
       </div>
-
-      <div className=" hidden sm:block">
-        <h1 className="text-2xl font-bold tracking-wider ">
-          Ver más
-        </h1>
+      <div className="hidden sm:block">
+        <button className="px-8 py-3 text-lg font-bold tracking-widest uppercase text-white border-2 border-white rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300">
+          VIDEO
+        </button>
       </div>
       
       <div className="div-der hidden sm:block"> {/* Ocultar en móviles, mostrar en pantallas pequeñas (sm) y mayores */}

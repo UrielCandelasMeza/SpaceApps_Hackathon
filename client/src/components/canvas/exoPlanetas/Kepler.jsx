@@ -4,15 +4,15 @@ import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../../Loader";
 
-const Kepler3 = () => {
-    const kepler3 = useGLTF("./exoPlanetas/kepler3/kepler_midres.gltf");
+const Kepler = () => {
+    const Kepler = useGLTF("./exoPlanetas/kepler1/planeta3.gltf");
 
     return (
-        <primitive object={kepler3.scene} scale={2.5} position-y={0} rotation-y={0} />
+        <primitive object={Kepler.scene} scale={2.5} position-y={0} rotation-y={0} />
     );
 };
 
-const Kepler3Canvas = () => {
+const KeplerCanvas = () => {
     return (
         <Canvas
             shadows
@@ -35,7 +35,7 @@ const Kepler3Canvas = () => {
                 />
                 {/* AGREGAR LUCES AQUÍ */}
                 <ambientLight intensity={2.5} /> {/* Luz ambiental: ilumina toda la escena por igual */}
-                <Kepler3 />
+                <Kepler />
 
                 <Preload all />
             </Suspense>
@@ -43,4 +43,4 @@ const Kepler3Canvas = () => {
     );
 };
 
-export default Kepler3Canvas;
+export default KeplerCanvas;
