@@ -42,7 +42,6 @@ const NavButton = ({ title, angle, path }) => {
 const PlanetButtonCanvas = () => {
 
   const menuItems = [
-    { title: "START", angle: 0, path: "/SeleccionarModelo" },
     { title: "ABOUT US", angle: 330, path: "/acerca-de" },
     { title: "CREDITS", angle: 300, path: "/creditos" },
     { title: "PAST PRED.", angle: 30, path: "/predicciones" },
@@ -51,7 +50,16 @@ const PlanetButtonCanvas = () => {
 
   return (
     <div className="container_body relative w-full h-full min-h-screen">
-        <div className="absolute inset-0 z-10 pointer-events-none">
+        <div className="start absolute inset-0 z-10 pointer-events-none ">
+                <NavButton 
+                    key={"START"}
+                    title={"START"} 
+                    angle={0} 
+                    path={"/SeleccionarModelo"}
+                />
+        </div>
+
+        <div className="absolute inset-0 z-10 pointer-events-none hidden sm:block">
             {menuItems.map((item) => (
                 <NavButton 
                     key={item.title}

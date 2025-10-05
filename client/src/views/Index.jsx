@@ -46,7 +46,7 @@ const Index = () => {
         <div className="relative w-full h-screen overflow-hidden">
             <StarsCanvas />
             <HeaderCanvas currentTitle={content.title} /> 
-            <div id="contentBox" className="flex flex-col items-center justify-center absolute transform -translate-x-1/2 -translate-y-1/2 z-20">
+            <div id="contentBox" className=" flex flex-col items-center justify-center absolute transform -translate-x-1/2 -translate-y-1/2 z-20 hidden sm:block ">
                 <InfoBox content={content} />
             </div>
             <PlanetButtonCanvas/>
