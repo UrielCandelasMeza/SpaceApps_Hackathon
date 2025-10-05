@@ -29,7 +29,7 @@ export const manageData = async (req: Request, res: Response) => {
   const features: string[] = [];
   try {
     if (type == Models.KOI) {
-      processedFile = processFile<KOI>(file.buffer);
+      processedFile = await processFile<KOI>(file.buffer);
       features.push(
         "koi_score",
         "koi_fpflag_nt",
@@ -50,7 +50,7 @@ export const manageData = async (req: Request, res: Response) => {
       );
     }
     if (type == Models.TOI) {
-      processedFile = processFile<TOI>(file.buffer);
+      processedFile = await processFile<TOI>(file.buffer);
       features.push(
         "ra",
         "dec",
@@ -71,9 +71,8 @@ export const manageData = async (req: Request, res: Response) => {
       );
     }
     if (type == Models.K2) {
-      processedFile = processFile<K2>(file.buffer);
+      processedFile = await processFile<K2>(file.buffer);
       features.push(
-        "disposition",
         "pl_orbper",
         "pl_rade",
         "pl_radj",
@@ -89,10 +88,12 @@ export const manageData = async (req: Request, res: Response) => {
         "sy_gaiamag",
       );
     }
-    const X_tensors = prepareData(processedFile, features);
+    console.log(processedFile);
     const model = await tf.loadLayersModel(
       `http://localhost:8000/${type}_Model/model.json`,
     );
+
+    const X_tensors = prepareData(processedFile, features);
 
     const predictions = model.predict(X_tensors) as tf.Tensor;
     const predictionsArray = await predictions.array();
@@ -115,4 +116,3 @@ export const manageData = async (req: Request, res: Response) => {
     });
   }
 };
-
