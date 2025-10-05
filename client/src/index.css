@@ -309,8 +309,37 @@ footer{
     0 0 15px #b0e0ff; /* Tono azul/blanco para un efecto de energía */
   transform: translateY(14px);
 }
+/* index.css */
 
+/* index.css */
 
+.card-base {
+    transition: all 300ms ease-in-out;
+    transform: translateY(20px);
+
+}
+
+.card-hover-glow {
+    text-shadow: 
+        0 0 5px #fff, 
+        0 0 10px #fff, 
+        0 0 15px #b0e0ff;
+}
+
+.card-elevate {
+    /* Mueve 14px hacia arriba */
+    transform: translateY(-10px); 
+}
+
+#planetButton {
+  top : 65%;
+  left: 50%;
+
+}
+#contentBox {
+  top : 30%;
+  left: 50%;
+}
 /*IMAGEN*/
 
 

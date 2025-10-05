@@ -8,7 +8,8 @@ const NavButton = ({ title, angle, path }) => {
 
   return (
     <div 
-      className="absolute top-1/2 left-1/2 origin-center pointer-events-auto"
+      id = "planetButton"
+      className="absolute origin-center pointer-events-auto"
       style={{ 
         transform: `translateX(-50%) translateY(-50%) rotate(${angle}deg) translateY(-300px)`,
       }}
@@ -56,7 +57,7 @@ const PlanetButtonCanvas = () => {
                     key={item.title}
                     title={item.title} 
                     angle={item.angle} 
-                    path={item.path} // <--- PASS PATH TO NavButton
+                    path={item.path}
                 />
             ))}
         </div>
