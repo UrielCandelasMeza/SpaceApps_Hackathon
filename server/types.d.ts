@@ -43,7 +43,6 @@ export interface TOI {
 }
 
 export interface K2 {
-  disposition: number;
   pl_orbper: number;
   pl_rade: number;
   pl_radj: number;
