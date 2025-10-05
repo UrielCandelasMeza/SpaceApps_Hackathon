@@ -23,9 +23,10 @@ const UploadSchema = Yup.object().shape({
 });
 
 
-const Contact = () => {
-  const [subiendo, setSubiendo] = useState(false);
-  const [serverState, setServerState] = useState({ 
+const Contact = ({ selectedModel }) => {
+
+    const [subiendo, setSubiendo] = useState(false);
+    const [serverState, setServerState] = useState({ 
     success: false, 
     error: null 
   });
@@ -46,7 +47,7 @@ const Contact = () => {
       formData.append("csvFile", values.file); 
 
       // La URL de tu servidor Express. Asegúrate de que el puerto sea correcto (e.g., 3000)
-      const serverUrl = "http://localhost:3000/api/csv/analysis"; // Ajusta según tu estructura de rutas
+      const serverUrl = `http://localhost:3000/api/csv/analysis/${selectedModel}`;  // Ajusta según tu estructura de rutas
 
       try {
         // 2. Realizar la petición POST con Axios
@@ -102,7 +103,7 @@ const Contact = () => {
             className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
             exit={{ opacity: 0, x: -500, transition: { duration: 0.5 } }}
           >
-            <p className={styles.sectionSubText}>Sube los datos que quieras</p>
+            <p className={styles.sectionSubText}>Sube los datos para el modelo: <strong className="text-white">{selectedModel}</strong></p> 
             <h3 className={styles.sectionHeadText}>Analizar</h3>
 
             <form
