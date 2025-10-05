@@ -3,8 +3,10 @@ import {
   BallCanvas,
   StarsCanvas,
   Kepler3Canvas,
-  HeaderCanvas,
-} from "./canvas";
+  HeaderCanvas } from "./canvas";
+
+  import Contact from "./Contact";
+
 import Navbar from "./Navbar";
 import CanvasLoader from "./Loader";
 export {
@@ -14,4 +16,5 @@ export {
   CanvasLoader,
   Kepler3Canvas,
   StarsCanvas,
+  Contact
 };
