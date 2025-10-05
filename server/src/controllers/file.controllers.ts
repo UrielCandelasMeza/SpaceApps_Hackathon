@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { processFile, prepareData } from "../lib/parseFile";
-import { type KOI, type TOI, type K2, Models } from "../../types";
+import type { KOI, TOI, K2 } from "../../types.d";
+import { Models } from "../../types.d";
 import * as tf from "@tensorflow/tfjs-node";
 
 export const manageData = async (req: Request, res: Response) => {
