@@ -1,10 +1,12 @@
+import LogoQuetzal from './Logo_Quetza2l.png'; 
 
 const HeaderCanvas = () => {
   return (
 
     <div className="contHed">
       
-      <div className="div-izq">
+      <div className="div-izq flex flex-wrap justify-center gap-8 content-center items-center">
+        <img src={LogoQuetzal} alt="ExoQuetzal" className='w-[100px]'/>
         <h1 className="text-3xl font-bold tracking-wider">
           ExoQuetzal
         </h1>
@@ -15,7 +17,7 @@ const HeaderCanvas = () => {
         </button>
       </div>
       
-      <div className="div-der hidden sm:block"> {/* Ocultar en móviles, mostrar en pantallas pequeñas (sm) y mayores */}
+      <div className="div-der hidden sm:block">
         <h1 className="text-2xl font-bold tracking-wider">
           Nuestra misión
         </h1>
