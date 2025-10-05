@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import SeleccionarModelo from "./views/SeleccionarModelo";
+import Info from "./views/Info";
 import Index from "./views/Index"
 import SubirFomulario from "./views/SubirFormulario";
 
