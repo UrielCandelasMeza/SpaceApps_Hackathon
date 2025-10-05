@@ -299,9 +299,13 @@ footer{
   width: 100%;
   padding: 40px;
   padding-top: 40px;
+  align-items: center;
 
 }
-
+.video
+{
+  transform: translateX(-50%);
+}
 .text-glow-white:hover {
   text-shadow: 
     0 0 5px #fff,  /* Sombra más definida */
