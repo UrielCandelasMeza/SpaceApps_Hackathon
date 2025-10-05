@@ -18,7 +18,7 @@ const SeleccionarModelo = () => {
             {/* Estrellas de fondo */}
             <StarsCanvas />
             <HeaderCanvas />
-            <h1 className="mt-10 mb-10 text-center text-3xl font-bold tracking-wider">Selecciona tu modelo</h1>
+            <h1 className="mt-10 mb-10 text-center text-3xl font-bold tracking-wider">Select Your Model</h1>
             {/* Planetas al fondo, centrados abajo */}
             <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-wrap justify-center gap-32 w-full max-w-[1200px] content-center">
                 

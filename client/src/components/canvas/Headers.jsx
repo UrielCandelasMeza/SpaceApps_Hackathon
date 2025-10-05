@@ -20,7 +20,7 @@ const HeaderCanvas = () => {
       
       <div className="div-der hidden sm:block">
         <h1 className="text-2xl font-bold tracking-wider">
-          Nuestra misión
+          Our Journey
         </h1>
       </div>
 
