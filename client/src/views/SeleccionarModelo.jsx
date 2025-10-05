@@ -14,7 +14,7 @@ const SeleccionarModelo = () => {
     };
 
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-full ">
             {/* Estrellas de fondo */}
             <StarsCanvas />
             <HeaderCanvas />

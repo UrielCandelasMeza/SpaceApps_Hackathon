@@ -13,7 +13,7 @@ const SubirFomulario = () => {
     // y asigna un valor por defecto si no existe (opcional pero recomendado)
 
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-full ">
             {/* Estrellas de fondo */}
             <StarsCanvas />
             {/* Pasa el modelo seleccionado como prop a Contact */}
