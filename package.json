@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/UrielCandelasMeza/SpaceApps_Hackathon#readme",
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "@prisma/client": "6.16.3",
+    "concurrently": "^9.2.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.16.3"
   }
 }
