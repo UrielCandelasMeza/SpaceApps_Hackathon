@@ -22,8 +22,8 @@ FEATURES_CONFIG = {
 
 # Diccionario que mapea el tipo de modelo a la ruta de su archivo .keras
 MODELS_CONFIG = {
-    "TOI": "http://localhost:8501/v1/models/TOI_model:predict",
-    "KOI": "models/KOI_model.keras",
+    "TOI": "https://modelos-spaceapps-nasa.onrender.com/v1/models/TOI_model:predict",
+    "KOI": "https://modelos-spaceapps-nasa.onrender.com/v1/models/KOI_model:predict",
     #"KOI": "http://localhost:8501/v1/models/KOI_model:predict",
     "K2": "models/K2_model.keras"
 }
