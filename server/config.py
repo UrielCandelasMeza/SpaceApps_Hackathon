@@ -22,7 +22,8 @@ FEATURES_CONFIG = {
 
 # Diccionario que mapea el tipo de modelo a la ruta de su archivo .keras
 MODELS_CONFIG = {
-    "TOI": "models/TOI_model.keras",
-    "KOI": "https://raw.githubusercontent.com/UrielCandelasMeza/KOI_model/47abd081eb8ae09cdfe3d9498b91e24d7e7c4033/KOI_model.keras",
+    "TOI": "http://localhost:8501/v1/models/TOI_model:predict",
+    "KOI": "models/KOI_model.keras",
+    #"KOI": "http://localhost:8501/v1/models/KOI_model:predict",
     "K2": "models/K2_model.keras"
 }
