@@ -1,9 +1,10 @@
 // SubirFomulario.jsx
 
 import { useLocation } from "react-router-dom"; // Importar useLocation
-import { StarsCanvas, Contact } from "../components";
+import { StarsCanvas } from "../components";
+import Resultado from "../components/Resultado";
 
-const SubirFomulario = () => {
+const Info = () => {
     // Usar useLocation para obtener el objeto de la ubicación
     const location = useLocation();
     
@@ -17,9 +18,9 @@ const SubirFomulario = () => {
             {/* Estrellas de fondo */}
             <StarsCanvas />
             {/* Pasa el modelo seleccionado como prop a Contact */}
-            <Contact selectedModel={selectedModel} />
+            <Resultado selectedModel={selectedModel} />
         </div>
     );
 };
 
-export default SubirFomulario;
+export default Info;

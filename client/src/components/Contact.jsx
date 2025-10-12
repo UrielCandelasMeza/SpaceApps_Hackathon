@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup"; // Importamos Yup para la validación
 import styled from "styled-components";
 import axios from "axios"; // Importamos Axios
+
 
 import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
@@ -22,10 +24,12 @@ const UploadSchema = Yup.object().shape({
     }),
 });
 
+const Contact = ({ selectedModel }) => {
+    const navigate = useNavigate();
 
-const Contact = () => {
-  const [subiendo, setSubiendo] = useState(false);
-  const [serverState, setServerState] = useState({ 
+
+    const [subiendo, setSubiendo] = useState(false);
+    const [serverState, setServerState] = useState({ 
     success: false, 
     error: null 
   });
@@ -39,6 +43,8 @@ const Contact = () => {
       setSubmitting(true);
       setSubiendo(true); // Ocultamos el form y activamos la rotación rápida
       setServerState({ success: false, error: null }); // Resetear estado
+      navigate("/Info");
+
 
       // 1. Crear el objeto FormData
       const formData = new FormData();
@@ -46,7 +52,7 @@ const Contact = () => {
       formData.append("csvFile", values.file); 
 
       // La URL de tu servidor Express. Asegúrate de que el puerto sea correcto (e.g., 3000)
-      const serverUrl = "http://localhost:3000/api/csv/analysis"; // Ajusta según tu estructura de rutas
+      const serverUrl = `http://localhost:3000/api/csv/analysis/${selectedModel}`;  // Ajusta según tu estructura de rutas
 
       try {
         // 2. Realizar la petición POST con Axios
@@ -68,7 +74,8 @@ const Contact = () => {
         // Retraso para que se vea la animación de rotación rápida antes de mostrar el resultado/formulario
         setTimeout(() => {
           setSubiendo(false); 
-        }, 1000); // 1 segundo de rotación extra
+        }, 1000);
+         // 1 segundo de rotación extra
       }
     },
   });
@@ -102,7 +109,7 @@ const Contact = () => {
             className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
             exit={{ opacity: 0, x: -500, transition: { duration: 0.5 } }}
           >
-            <p className={styles.sectionSubText}>Sube los datos que quieras</p>
+            <p className={styles.sectionSubText}>Sube los datos para el modelo: <strong className="text-white">{selectedModel}</strong></p> 
             <h3 className={styles.sectionHeadText}>Analizar</h3>
 
             <form

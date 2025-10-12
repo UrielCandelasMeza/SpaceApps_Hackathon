@@ -7,6 +7,7 @@ import HeaderCanvas from "./Headers";
 import PlanetButtonCanvas from "./PlanetButtons";
 import Kepler2Canvas from "./exoPlanetas/Kepler2";
 import KeplerCanvas from "./exoPlanetas/Kepler";
+import InfoBox from "./infoBox";
 
 export {
   EarthCanvas,
@@ -18,4 +19,5 @@ export {
   PlanetButtonCanvas,
   Kepler2Canvas,
   KeplerCanvas,
+  InfoBox,
 };
