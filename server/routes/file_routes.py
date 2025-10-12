@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import requests
 #import tensorflow as tf
-from config import FEATURES_CONFIG#, MODELS_CONFIG
+import pickle
+from config import FEATURES_CONFIG, MODELS_CONFIG
 
 file_bp = Blueprint('file_bp', __name__)
 
@@ -19,6 +20,13 @@ file_bp = Blueprint('file_bp', __name__)
 #         loaded_models[model_type] = tf.keras.models.load_model(model_path)
 #         print(f">>>Modelo '{model_type}' cargado en memoria.")
 #     return loaded_models[model_type]
+try:
+    with open('scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+    print("Scaler 'scaler.pkl' loaded successfully.")
+except FileNotFoundError:
+    scaler = None
+    print("ERROR: 'scaler.pkl' not found. Predictions will not be scaled.")
 
 @file_bp.route('/csv/<string:model_type>', methods=['POST'])
 def manage_data(model_type: str):
@@ -44,17 +52,37 @@ def manage_data(model_type: str):
         
         missing_cols = [col for col in features if col not in df.columns]
         if missing_cols:
-            return jsonify({"error": f"Columnas faltantes en el CSV: {', '.join(missing_cols)}"}), 400
+            return jsonify(
+                {"error": f"Columnas faltantes en el CSV: {', '.join(missing_cols)}"}
+            ), 400
 
-        df_features = df[features].values
+        processed_data = None # 💡 1. Variable para guardar los datos procesados
+
+        df_features = df[features]
+        if model_type == 'K2':
+            print(f"Procesando para el modelo '{model_type}', se aplicará el scaler.")
+            # Si el modelo es K2, verificamos que el scaler se haya cargado
+            if scaler is None:
+                return jsonify(
+                    {"error": "El archivo 'scaler.pkl' es necesario para el modelo K2, pero no se encontró."}
+                ), 500
+            
+            # Aplicamos el scaler
+            processed_data = scaler.transform(df_features)
+        else:
+            # Para cualquier otro modelo, usamos los datos tal cual
+            print(f"Procesando para el modelo '{model_type}', no se aplicará scaler.")
+            processed_data = df_features.values
+
         
-        X_tensor_reshaped = df_features.reshape(df_features.shape[0], df_features.shape[1], 1)
+        X_tensor_reshaped = processed_data.reshape(processed_data.shape[0], processed_data.shape[1], 1)
 
         input_array = np.array(X_tensor_reshaped, dtype=np.float32)
         #print(input_array[0].tolist())
         #model = get_model(model_type)
         #predictions = model.predict(input_array)
-        url = f"http://localhost:8501/v1/models/{model_type}_model:predict"
+        url = MODELS_CONFIG.get(model_type)
+        #url = f"http://localhost:8501/v1/models/{model_type}_model:predict"
         payload = {"instances": input_array.tolist()}
         response = requests.post(url, json=payload)
 
