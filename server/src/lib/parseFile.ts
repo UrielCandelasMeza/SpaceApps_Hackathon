@@ -3,6 +3,10 @@ import csv from "csv-parser";
 import * as tf from "@tensorflow/tfjs-node";
 import { Readable } from "stream";
 
+interface StringIndexable {
+  [key: string]: string;
+}
+
 export async function processFile<T>(fileBuffer: Buffer) {
   return new Promise((resolve, reject) => {
     const results: T[] = [];
@@ -22,19 +26,20 @@ export async function processFile<T>(fileBuffer: Buffer) {
   });
 }
 
-export function prepareData<T>(data: T[], features: string[]) {
-  const featureData = data.map((item) =>
-    features.map((feat) => {
-      const value = item[feat as keyof T];
-      return value as unknown as number;
-    }),
-  );
+export function prepareData<T extends StringIndexable>(
+  data: T[],
+  features: (keyof T)[],
+): tf.Tensor3D {
+  const tensorData = data.map((item: T) => {
+    return features.map((feature) => parseFloat(item[feature]));
+  });
 
-  const X_tensor = tf.tensor2d(featureData);
+  // Crea el tensor 2D
+  const X_tensor = tf.tensor2d(tensorData);
 
-  // const min = X_tensor.min();
-  // const max = X_tensor.max();
-  // const normalized_X = X_tensor.sub(min).div(max.sub(min));
+  // Reshapes the 2D tensor to the 3D shape required by the Conv1D layer
+  // La forma resultante será [número_de_ejemplos, número_de_características, 1]
+  const reshaped_X_tensor = X_tensor.reshape([data.length, features.length, 1]);
 
-  return X_tensor;
+  return reshaped_X_tensor as tf.Tensor3D;
 }
