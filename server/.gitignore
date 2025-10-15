@@ -2,4 +2,4 @@
 models
 venv
 *.env
-
+__pycache__

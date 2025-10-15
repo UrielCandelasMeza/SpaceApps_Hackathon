@@ -1,7 +1,9 @@
-# Este archivo centraliza las listas de características para cada tipo de modelo.
-# Es más limpio que tenerlas directamente en el código de la ruta.
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# Diccionario que mapea el tipo de modelo a su lista de características
+key: str = os.environ.get("SUPABASE_KEY")
+
 FEATURES_CONFIG = {
     "TOI": [
         "ra", "dec", "st_pmra", "st_pmdec", "pl_tranmid", "pl_orbper",
@@ -27,3 +29,5 @@ MODELS_CONFIG = {
     #"KOI": "http://localhost:8501/v1/models/KOI_model:predict",
     "K2": "https://modelos-spaceapps-nasa.onrender.com/v1/models/TOI_model:predict"
 }
+
+SUPABASE_KEY = key
