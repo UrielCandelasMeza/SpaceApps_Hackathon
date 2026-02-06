@@ -100,5 +100,3 @@ El backend se conecta automáticamente a ellos para realizar las predicciones.
 Si deseas contribuir, ¡serás bienvenido!
 Haz un **fork** del repositorio, implementa tus mejoras y envía un **pull request**.
 Por favor, asegúrate de que tu código siga las buenas prácticas del proyecto.
-
-¿Deseas que lo reformatee en **Markdown con emojis, negritas y secciones visuales más destacadas** (por ejemplo, para GitHub)? Puedo hacerlo sin cambiar el contenido.
